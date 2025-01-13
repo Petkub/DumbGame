@@ -6,7 +6,6 @@ class Paddle():
         self.window = window
         self.image = image
         self.paddle_rect = self.image.get_rect(x = x, y = y)
-        
         self.velocity = 200
         
     def draw(self):
@@ -14,8 +13,14 @@ class Paddle():
         
     def move(self, delta_time):
         pressed = pygame.key.get_pressed()
-        
         if (pressed[pygame.K_LEFT] or pressed[pygame.K_a]):
             self.paddle_rect.x -= self.velocity * delta_time
         if (pressed[pygame.K_RIGHT] or pressed[pygame.K_d]):
             self.paddle_rect.x += self.velocity * delta_time
+        self.check_bound()
+            
+    def check_bound(self):
+        if self.paddle_rect.x < 0:
+            self.paddle_rect.x = 0
+        if self.paddle_rect.x > self.window.get_width() - self.paddle_rect.width:
+            self.paddle_rect.x = self.window.get_width() - self.paddle_rect.width
