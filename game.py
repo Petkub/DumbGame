@@ -27,7 +27,13 @@ class Game():
         ###
         
         ###block
+        self.block_img = pygame.image.load("images/pink_block.png")
+        self.block_img = pygame.transform.scale(self.block_img, (64, 32))
+        self.blocks = list()
         
+        for y in self.cal_block_YPos():
+            for x in self.cal_block_Xpos():
+                self.blocks.append(Block(self.window, x, y, self.block_img))
         ###
         
         ###time
@@ -61,7 +67,9 @@ class Game():
             self.window.blit(self.bg, (0, 0))
             self.paddle.draw()
             self.ball.draw()
-            
+            for block in self.blocks:
+                block.draw()
+                
             self.paddle.move(delta_time)
             self.ball.move(delta_time)
             ###
@@ -70,12 +78,30 @@ class Game():
             
     #2 BlOCK X_POSITION method
     def cal_block_Xpos(self):
-        pass
+        block_w = self.block_img.get_width()
+        window_w = self.window.get_width()
+        gap = 10
+        total_block = window_w // (block_w + gap)
+        side_gap = (window_w - total_block * (block_w + gap) + gap) // 2
+        
+        x_list = list()
+        for x in range(total_block):
+            x_list.append(side_gap + (block_w + gap) * x)
+        
+        return x_list
     ###
     
     #3 BlOCK Y_POSITION method
     def cal_block_YPos(self):
-        pass
+        block_h = self.block_img.get_height()
+        gap = 15
+        row = 5
+        
+        y_list = list()
+        for y in range(row):
+            y_list.append(gap + (block_h + gap) * y)
+            
+        return y_list
     ###
     
     #4 Ball & Block checker method
